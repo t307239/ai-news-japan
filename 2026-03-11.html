@@ -224,16 +224,30 @@
             line-height: 1.75; margin-bottom: 14px;
         }
         .card-footer {
-            display: flex; justify-content: flex-end;
+            display: flex; justify-content: flex-end; gap: 8px;
             border-top: 1px solid var(--border); padding-top: 10px;
-            margin-top: 4px;
+            margin-top: 4px; flex-wrap: wrap;
         }
-        .read-more-link a {
-            font-size: 0.77rem; color: var(--accent);
+        .btn-translate {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: rgba(66,133,244,0.12);
+            border: 1px solid rgba(66,133,244,0.35);
+            border-radius: 7px; padding: 4px 12px;
+            font-size: 0.76rem; font-weight: 700;
+            color: #4fa3ff; text-decoration: none;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .btn-translate:hover {
+            background: rgba(66,133,244,0.22);
+            border-color: rgba(66,133,244,0.6);
+        }
+        .btn-original {
+            display: inline-flex; align-items: center;
+            font-size: 0.76rem; color: var(--text-dim);
             text-decoration: none; font-weight: 500;
-            transition: color 0.15s, gap 0.15s;
+            transition: color 0.15s; padding: 4px 4px;
         }
-        .read-more-link a:hover { color: var(--accent-lt); }
+        .btn-original:hover { color: var(--text-sub); }
 
         /* ===== 空状態 ===== */
         .empty-state {
@@ -361,7 +375,7 @@
         </div>
         <p class="tagline">海外最新AIニュースを毎日日本語でお届け</p>
         <div class="header-meta">
-            <span class="hbadge live"><span class="live-dot"></span> 2026年03月11日 00:07 更新</span>
+            <span class="hbadge live"><span class="live-dot"></span> 2026年03月11日 00:17 更新</span>
             <span class="hbadge">🔶 HackerNews</span>
             <span class="hbadge">🤖 Reddit</span>
         </div>
@@ -392,16 +406,19 @@
                         🔶 HN
                     </span>
                 </div>
-                <span class="score-badge">▲ 11</span>
+                <span class="score-badge">▲ 22</span>
             </div>
             <h2 class="card-title">
                 <a href="https://lwn.net/SubscriberLink/1061544/125f911834966dd0/" target="_blank" rel="noopener noreferrer">Debian decides not to decide on AI-generated contributions</a>
             </h2>
             
             <div class="card-footer">
-                <span class="read-more-link">
-                    <a href="https://lwn.net/SubscriberLink/1061544/125f911834966dd0/" target="_blank" rel="noopener noreferrer">元記事を読む →</a>
-                </span>
+                <a class="btn-translate" href="https://translate.google.com/translate?sl=en&tl=ja&hl=ja&u=https%3A%2F%2Flwn.net%2FSubscriberLink%2F1061544%2F125f911834966dd0%2F" target="_blank" rel="noopener noreferrer">
+                    🌐 日本語で読む
+                </a>
+                <a class="btn-original" href="https://lwn.net/SubscriberLink/1061544/125f911834966dd0/" target="_blank" rel="noopener noreferrer">
+                    元記事 →
+                </a>
             </div>
         </article>
         <article class="card" data-source="hn" style="animation-delay:0.07s">
@@ -413,16 +430,19 @@
                         🔶 HN
                     </span>
                 </div>
-                <span class="score-badge">▲ 176</span>
+                <span class="score-badge">▲ 177</span>
             </div>
             <h2 class="card-title">
                 <a href="https://www.ribbonfarm.com/2009/10/07/the-gervais-principle-or-the-office-according-to-the-office/" target="_blank" rel="noopener noreferrer">The Gervais Principle, or the Office According to "The Office" (2009)</a>
             </h2>
             
             <div class="card-footer">
-                <span class="read-more-link">
-                    <a href="https://www.ribbonfarm.com/2009/10/07/the-gervais-principle-or-the-office-according-to-the-office/" target="_blank" rel="noopener noreferrer">元記事を読む →</a>
-                </span>
+                <a class="btn-translate" href="https://translate.google.com/translate?sl=en&tl=ja&hl=ja&u=https%3A%2F%2Fwww.ribbonfarm.com%2F2009%2F10%2F07%2Fthe-gervais-principle-or-the-office-according-to-the-office%2F" target="_blank" rel="noopener noreferrer">
+                    🌐 日本語で読む
+                </a>
+                <a class="btn-original" href="https://www.ribbonfarm.com/2009/10/07/the-gervais-principle-or-the-office-according-to-the-office/" target="_blank" rel="noopener noreferrer">
+                    元記事 →
+                </a>
             </div>
         </article>
         <article class="card" data-source="hn" style="animation-delay:0.14s">
@@ -434,16 +454,19 @@
                         🔶 HN
                     </span>
                 </div>
-                <span class="score-badge">▲ 259</span>
+                <span class="score-badge">▲ 271</span>
             </div>
             <h2 class="card-title">
                 <a href="https://www.ft.com/content/e5245ec3-1a58-4eff-ab58-480b6259aaf1" target="_blank" rel="noopener noreferrer">Yann LeCun's AI startup raises $1B in Europe's largest ever seed round</a>
             </h2>
             
             <div class="card-footer">
-                <span class="read-more-link">
-                    <a href="https://www.ft.com/content/e5245ec3-1a58-4eff-ab58-480b6259aaf1" target="_blank" rel="noopener noreferrer">元記事を読む →</a>
-                </span>
+                <a class="btn-translate" href="https://translate.google.com/translate?sl=en&tl=ja&hl=ja&u=https%3A%2F%2Fwww.ft.com%2Fcontent%2Fe5245ec3-1a58-4eff-ab58-480b6259aaf1" target="_blank" rel="noopener noreferrer">
+                    🌐 日本語で読む
+                </a>
+                <a class="btn-original" href="https://www.ft.com/content/e5245ec3-1a58-4eff-ab58-480b6259aaf1" target="_blank" rel="noopener noreferrer">
+                    元記事 →
+                </a>
             </div>
         </article>
         <a class="aff-card" href="https://px.a8.net/svt/ejp?a8mat=XXXXX" target="_blank" rel="noopener noreferrer sponsored">
@@ -464,21 +487,48 @@
                         🔶 HN
                     </span>
                 </div>
-                <span class="score-badge">▲ 25</span>
+                <span class="score-badge">▲ 27</span>
             </div>
             <h2 class="card-title">
                 <a href="https://www.pgadmin.org/docs/pgadmin4/9.13/query_tool.html#ai-assistant-panel" target="_blank" rel="noopener noreferrer">PgAdmin 4 9.13 with AI Assistant Panel</a>
             </h2>
             
             <div class="card-footer">
-                <span class="read-more-link">
-                    <a href="https://www.pgadmin.org/docs/pgadmin4/9.13/query_tool.html#ai-assistant-panel" target="_blank" rel="noopener noreferrer">元記事を読む →</a>
-                </span>
+                <a class="btn-translate" href="https://translate.google.com/translate?sl=en&tl=ja&hl=ja&u=https%3A%2F%2Fwww.pgadmin.org%2Fdocs%2Fpgadmin4%2F9.13%2Fquery_tool.html%23ai-assistant-panel" target="_blank" rel="noopener noreferrer">
+                    🌐 日本語で読む
+                </a>
+                <a class="btn-original" href="https://www.pgadmin.org/docs/pgadmin4/9.13/query_tool.html#ai-assistant-panel" target="_blank" rel="noopener noreferrer">
+                    元記事 →
+                </a>
             </div>
         </article>
         <article class="card" data-source="hn" style="animation-delay:0.28s">
             <div class="card-top-row">
                 <span class="rank-badge" style="color:#444466; border-color:#44446644; background:#44446611">#5</span>
+                <div class="card-badges">
+                    
+                    <span class="source-badge" style="background:#ff631418; color:#ff6314; border-color:#ff631440">
+                        🔶 HN
+                    </span>
+                </div>
+                <span class="score-badge">▲ 271</span>
+            </div>
+            <h2 class="card-title">
+                <a href="https://gitlab.redox-os.org/redox-os/redox/-/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Redox OS has adopted a Certificate of Origin policy and a strict no-LLM policy</a>
+            </h2>
+            
+            <div class="card-footer">
+                <a class="btn-translate" href="https://translate.google.com/translate?sl=en&tl=ja&hl=ja&u=https%3A%2F%2Fgitlab.redox-os.org%2Fredox-os%2Fredox%2F-%2Fblob%2Fmaster%2FCONTRIBUTING.md" target="_blank" rel="noopener noreferrer">
+                    🌐 日本語で読む
+                </a>
+                <a class="btn-original" href="https://gitlab.redox-os.org/redox-os/redox/-/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">
+                    元記事 →
+                </a>
+            </div>
+        </article>
+        <article class="card" data-source="hn" style="animation-delay:0.35s">
+            <div class="card-top-row">
+                <span class="rank-badge" style="color:#444466; border-color:#44446644; background:#44446611">#6</span>
                 <div class="card-badges">
                     
                     <span class="source-badge" style="background:#ff631418; color:#ff6314; border-color:#ff631440">
@@ -492,30 +542,12 @@
             </h2>
             
             <div class="card-footer">
-                <span class="read-more-link">
-                    <a href="https://serd.es/2026/03/06/TCXO-failure-analysis.html" target="_blank" rel="noopener noreferrer">元記事を読む →</a>
-                </span>
-            </div>
-        </article>
-        <article class="card" data-source="hn" style="animation-delay:0.35s">
-            <div class="card-top-row">
-                <span class="rank-badge" style="color:#444466; border-color:#44446644; background:#44446611">#6</span>
-                <div class="card-badges">
-                    
-                    <span class="source-badge" style="background:#ff631418; color:#ff6314; border-color:#ff631440">
-                        🔶 HN
-                    </span>
-                </div>
-                <span class="score-badge">▲ 266</span>
-            </div>
-            <h2 class="card-title">
-                <a href="https://gitlab.redox-os.org/redox-os/redox/-/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Redox OS has adopted a Certificate of Origin policy and a strict no-LLM policy</a>
-            </h2>
-            
-            <div class="card-footer">
-                <span class="read-more-link">
-                    <a href="https://gitlab.redox-os.org/redox-os/redox/-/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">元記事を読む →</a>
-                </span>
+                <a class="btn-translate" href="https://translate.google.com/translate?sl=en&tl=ja&hl=ja&u=https%3A%2F%2Fserd.es%2F2026%2F03%2F06%2FTCXO-failure-analysis.html" target="_blank" rel="noopener noreferrer">
+                    🌐 日本語で読む
+                </a>
+                <a class="btn-original" href="https://serd.es/2026/03/06/TCXO-failure-analysis.html" target="_blank" rel="noopener noreferrer">
+                    元記事 →
+                </a>
             </div>
         </article>
         <a class="aff-card" href="https://px.a8.net/svt/ejp?a8mat=XXXXX" target="_blank" rel="noopener noreferrer sponsored">
