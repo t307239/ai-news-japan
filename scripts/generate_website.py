@@ -353,11 +353,22 @@ def generate_html(items, today):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="海外の最新AIニュースを毎日日本語でまとめてお届け。HackerNews・Redditから厳選した情報をAIが翻訳・要約。">
+    <meta name="description" content="海外の最新AIニュースを毎日日本語でまとめてお届け。HackerNews・TechCrunch・MIT Tech Reviewから厳選した情報をAIが翻訳・要約。">
     <meta name="google-site-verification" content="Rzb7d4uOtZVeyRmI4nqMmR3LVT5ODz4h00oXC2bYP58">
-    <meta property="og:title" content="AI速報ジャパン - {date_str}の海外AIニュース">
-    <meta property="og:description" content="HackerNews・RedditのAIニュースをAIが日本語に翻訳・要約してお届け。">
+    <!-- OGP -->
+    <meta property="og:title" content="AI速報ジャパン｜{date_str}の海外AIニュース日本語まとめ">
+    <meta property="og:description" content="HackerNews・TechCrunch・MIT Tech ReviewのAIニュースをAIが日本語に翻訳・要約してお届け。毎日更新。">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://t307239.github.io/ai-news-japan/">
+    <meta property="og:image" content="https://t307239.github.io/ai-news-japan/ogp.png">
+    <meta property="og:site_name" content="AI速報ジャパン">
+    <meta property="og:locale" content="ja_JP">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ai_fukugyo_ken7">
+    <meta name="twitter:title" content="AI速報ジャパン｜{date_str}の海外AIニュース">
+    <meta name="twitter:description" content="HackerNews・TechCrunch・MIT Tech ReviewのAIニュースをAIが日本語に翻訳・要約してお届け。毎日更新。">
+    <meta name="twitter:image" content="https://t307239.github.io/ai-news-japan/ogp.png">
     <title>AI速報ジャパン｜{date_str}の海外AIニュース日本語まとめ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
