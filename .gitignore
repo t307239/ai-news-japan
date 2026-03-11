@@ -1,0 +1,16 @@
+# APIキー・設定ファイル（絶対にGitHubにアップしない）
+x_config.env
+*.env
+.env
+
+# キャッシュ
+website_cache.json
+__pycache__/
+*.pyc
+
+# ログ
+logs/
+*.log
+
+# OS
+.DS_Store

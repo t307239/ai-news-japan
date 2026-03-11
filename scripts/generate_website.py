@@ -792,46 +792,6 @@ def generate_html(items, today):
 </html>"""
     return html
 
-# ===== X (Twitter) 自動投稿 =====
-def tweet_to_x(items):
-    """サイト更新時にX(Twitter)へ今日のAIニューストップ3を投稿"""
-    if not items:
-        return
-    # 環境変数からキーを取得（GitHub Secretsで設定）
-    api_key    = os.environ.get("TWITTER_API_KEY")
-    api_secret = os.environ.get("TWITTER_API_SECRET")
-    acc_token  = os.environ.get("TWITTER_ACCESS_TOKEN")
-    acc_secret = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET")
-    if not all([api_key, api_secret, acc_token, acc_secret]):
-        print("[INFO] Twitter APIキーが未設定のためX投稿をスキップ")
-        return
-    try:
-        import tweepy
-        client = tweepy.Client(
-            consumer_key=api_key,
-            consumer_secret=api_secret,
-            access_token=acc_token,
-            access_token_secret=acc_secret
-        )
-        top3   = items[:3]
-        medals = ["🥇", "🥈", "🥉"]
-        lines  = ["今日の海外AIニュース🔥", ""]
-        for i, item in enumerate(top3):
-            title = item.get("title_ja", item.get("title", ""))
-            # タイトルが長い場合は短縮
-            if len(title) > 28:
-                title = title[:27] + "…"
-            score = item.get("score", 0)
-            lines.append(f"{medals[i]}{title}（▲{score:,}）")
-        lines += ["", "詳細と要約はこちら↓",
-                  "https://t307239.github.io/ai-news-japan/",
-                  "", "#AIニュース #AI"]
-        tweet_text = "\n".join(lines)
-        response = client.create_tweet(text=tweet_text)
-        print(f"[OK] X投稿完了！ tweet_id={response.data['id']}")
-    except Exception as e:
-        print(f"[WARNING] X投稿エラー: {e}")
-
 # ===== Telegram 通知（generate_daily_content.py と同じ Bot を流用）=====
 TELEGRAM_TOKEN   = "8707035299:AAG_8NRnRb86zNBXLXZAo8asdhpPmK-9mIQ"
 TELEGRAM_CHAT_ID = "8738265696"
@@ -958,7 +918,6 @@ def main():
     html = generate_html(items, today)
     save_and_push(html, today)
     notify_telegram(items)   # Telegram通知
-    tweet_to_x(items)        # X(Twitter)自動投稿
     print("[OK] 完了！更新しました")
 
 if __name__ == "__main__":
