@@ -12,7 +12,7 @@ import os, json, datetime, urllib.request, urllib.parse, urllib.error, time, sub
 # ===== 設定 =====
 # GitHub Actions では環境変数から取得、ローカルではハードコード値を使用
 IS_CI          = os.environ.get("GITHUB_ACTIONS") == "true"
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyBB_--0WZkmSA7-9KHwbQ4VozO1pN31x7Y")
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
 
 if IS_CI:
     # GitHub Actions: スクリプトはscripts/にあるのでリポジトリルートは1階層上
