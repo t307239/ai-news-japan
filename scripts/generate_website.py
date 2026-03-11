@@ -54,7 +54,8 @@ def fetch_hackernews_ai():
         with urllib.request.urlopen(req, timeout=10) as res:
             story_ids = json.loads(res.read())[:80]
         ai_keywords = ["ai", "llm", "gpt", "claude", "gemini", "machine learning",
-                       "neural", "openai", "anthropic", "model", "agent"]
+                       "neural", "openai", "anthropic", "deepmind", "agent",
+                       "chatgpt", "copilot", "diffusion", "transformer", "robotics"]
         for sid in story_ids:
             if len(items) >= 6: break
             try:
@@ -79,24 +80,35 @@ def fetch_hackernews_ai():
     return items
 
 def fetch_reddit_ai():
+    """Reddit RSSフィード経由でAI記事を収集（JSON APIは403になるためRSSを使用）"""
+    import xml.etree.ElementTree as ET
+    BROWSER_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     items = []
     for sub in ["MachineLearning", "LocalLLaMA", "artificial"]:
         if len(items) >= 6: break
         try:
-            url = f"https://www.reddit.com/r/{sub}/hot.json?limit=5"
-            req = urllib.request.Request(url, headers={"User-Agent": "AI-News-Japan/1.0"})
+            url = f"https://www.reddit.com/r/{sub}/hot.rss?limit=10"
+            req = urllib.request.Request(url, headers={"User-Agent": BROWSER_UA})
             with urllib.request.urlopen(req, timeout=10) as res:
-                data  = json.loads(res.read())
-                posts = data.get("data", {}).get("children", [])
-            for post in posts[:3]:
-                d = post.get("data", {})
-                if d.get("upvote_ratio", 1.0) < 0.7: continue
+                root = ET.fromstring(res.read())
+            NS = "{http://www.w3.org/2005/Atom}"
+            entries = root.findall(f"{NS}entry")
+            for entry in entries[:3]:
+                if len(items) >= 6: break
+                title = (entry.findtext(f"{NS}title") or "").strip()
+                link = ""
+                for lel in entry.findall(f"{NS}link"):
+                    if lel.get("rel", "alternate") == "alternate":
+                        link = lel.get("href", "").strip()
+                        break
+                if not title or not link: continue
                 items.append({
-                    "source":  f"Reddit r/{sub}",
-                    "title":   d.get("title", ""),
-                    "url":     f"https://reddit.com{d.get('permalink', '')}",
-                    "score":   d.get("score", 0),
+                    "source": f"Reddit r/{sub}",
+                    "title":  title,
+                    "url":    link,
+                    "score":  0,
                 })
+            print(f"[OK] Reddit r/{sub}: {len([x for x in items if f'r/{sub}' in x['source']])}件収集")
         except Exception as e:
             print(f"[WARNING] Reddit r/{sub}: {e}")
     return items
@@ -130,13 +142,21 @@ def fetch_rss_ai():
                 if len(items) >= 9: break
                 title = (entry.findtext("title") or
                          entry.findtext("{http://www.w3.org/2005/Atom}title") or "").strip()
-                # ★バグ修正: ElementはNone以外でも偽になるため is not None で判定
-                link_el = entry.find("link")
-                if link_el is None:
-                    link_el = entry.find("{http://www.w3.org/2005/Atom}link")
+                # ★Atom対応: rel="alternate"のlinkを優先、なければ最初のlinkを使う
+                NS = "{http://www.w3.org/2005/Atom}"
                 link = ""
-                if link_el is not None:
-                    link = (link_el.text or link_el.get("href") or "").strip()
+                for lel in entry.findall(f"{NS}link") + entry.findall("link"):
+                    rel  = lel.get("rel", "alternate")
+                    href = (lel.text or lel.get("href") or "").strip()
+                    if href and rel == "alternate":
+                        link = href
+                        break
+                if not link:
+                    for lel in entry.findall(f"{NS}link") + entry.findall("link"):
+                        href = (lel.text or lel.get("href") or "").strip()
+                        if href:
+                            link = href
+                            break
                 if not title or not link: continue
                 if not ai_only and not any(kw in title.lower() for kw in ai_keywords):
                     continue
