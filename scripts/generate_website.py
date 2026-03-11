@@ -101,6 +101,56 @@ def fetch_reddit_ai():
             print(f"[WARNING] Reddit r/{sub}: {e}")
     return items
 
+# ===== RSS（TechCrunch AI / MIT Tech Review / The Verge AI）=====
+def fetch_rss_ai():
+    """TechCrunch AI・MIT Tech Review・The VergeのRSSからAIニュースを収集"""
+    import xml.etree.ElementTree as ET
+    # (URL, ソース名, AI専用フィードかどうか)
+    # AI専用フィード=Trueの場合はキーワードフィルタをスキップ
+    RSS_SOURCES = [
+        ("https://techcrunch.com/category/artificial-intelligence/feed/",         "TechCrunch AI",  True),
+        ("https://www.technologyreview.com/topic/artificial-intelligence/feed/",  "MIT Tech Review", True),
+        ("https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",     "The Verge AI",   True),
+    ]
+    ai_keywords = ["ai", "llm", "gpt", "claude", "gemini", "openai", "anthropic",
+                   "machine learning", "neural", "model", "agent", "robot",
+                   "chatbot", "language", "intelligence", "automation", "deepmind"]
+    BROWSER_UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    items = []
+    for rss_url, source_name, ai_only in RSS_SOURCES:
+        before = len(items)
+        try:
+            req = urllib.request.Request(rss_url, headers={"User-Agent": BROWSER_UA})
+            with urllib.request.urlopen(req, timeout=10) as res:
+                root = ET.fromstring(res.read())
+            entries = root.findall(".//item")
+            if not entries:
+                entries = root.findall(".//{http://www.w3.org/2005/Atom}entry")
+            for entry in entries[:8]:
+                if len(items) >= 9: break
+                title = (entry.findtext("title") or
+                         entry.findtext("{http://www.w3.org/2005/Atom}title") or "").strip()
+                # ★バグ修正: ElementはNone以外でも偽になるため is not None で判定
+                link_el = entry.find("link")
+                if link_el is None:
+                    link_el = entry.find("{http://www.w3.org/2005/Atom}link")
+                link = ""
+                if link_el is not None:
+                    link = (link_el.text or link_el.get("href") or "").strip()
+                if not title or not link: continue
+                if not ai_only and not any(kw in title.lower() for kw in ai_keywords):
+                    continue
+                items.append({
+                    "source": source_name,
+                    "title":  title,
+                    "url":    link,
+                    "score":  0,
+                })
+            print(f"[OK] {source_name}: {len(items) - before}件収集")
+        except Exception as e:
+            print(f"[WARNING] {source_name}: {e}")
+    return items
+
 # ===== Geminiで日本語要約 =====
 def translate_with_gemini(items):
     if not items:
@@ -121,9 +171,15 @@ def translate_with_gemini(items):
 
     data = {"contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {"temperature": 0.3, "maxOutputTokens": 5000}}
-    models = ["gemini-2.0-flash-lite", "gemini-2.0-flash"]
-    for model in models:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
+    # (モデル名, APIバージョン) の順に試す
+    models = [
+        ("gemini-2.0-flash-lite",     "v1beta"),
+        ("gemini-2.0-flash",          "v1beta"),
+        ("gemini-2.0-flash",          "v1"),
+        ("gemini-1.5-flash-latest",   "v1beta"),
+    ]
+    for model, api_ver in models:
+        url = f"https://generativelanguage.googleapis.com/{api_ver}/models/{model}:generateContent?key={GEMINI_API_KEY}"
         req = urllib.request.Request(url, data=json.dumps(data).encode(),
                                      headers={"Content-Type": "application/json"}, method="POST")
         try:
@@ -158,12 +214,12 @@ def translate_with_gemini(items):
                 return items
         except urllib.error.HTTPError as e:
             if e.code == 429:
-                print(f"[WARNING] Gemini翻訳エラー ({model}): {e} — 30秒待機してリトライ")
+                print(f"[WARNING] Gemini翻訳エラー ({model}/{api_ver}): {e} — 30秒待機してリトライ")
                 time.sleep(30)
             else:
-                print(f"[WARNING] Gemini翻訳エラー ({model}): {e}")
+                print(f"[WARNING] Gemini翻訳エラー ({model}/{api_ver}): {e}")
         except Exception as e:
-            print(f"[WARNING] Gemini翻訳エラー ({model}): {e}")
+            print(f"[WARNING] Gemini翻訳エラー ({model}/{api_ver}): {e}")
     print("[WARNING] Gemini翻訳に失敗 — 英語タイトルのまま表示します")
     return items
 
@@ -173,6 +229,9 @@ SOURCE_META = {
     "Reddit r/MachineLearning": {"icon": "🤖", "color": "#ff4500", "short": "ML"},
     "Reddit r/LocalLLaMA": {"icon": "🦙", "color": "#ff6b35", "short": "LLM"},
     "Reddit r/artificial":  {"icon": "🧠", "color": "#e74c3c", "short": "AI"},
+    "TechCrunch AI":       {"icon": "🟢", "color": "#00d084", "short": "TC"},
+    "MIT Tech Review":     {"icon": "🔵", "color": "#0072ce", "short": "MIT"},
+    "The Verge AI":        {"icon": "🟣", "color": "#7c3aed", "short": "VG"},
 }
 
 def get_source_meta(source):
@@ -905,7 +964,7 @@ def main():
     force = "--force" in sys.argv  # 強制更新オプション
 
     print("[INFO] ニュース収集中...")
-    items = fetch_hackernews_ai() + fetch_reddit_ai()
+    items = fetch_hackernews_ai() + fetch_reddit_ai() + fetch_rss_ai()
     print(f"[OK] {len(items)}件収集")
 
     # キャッシュと比較して変更がなければスキップ
