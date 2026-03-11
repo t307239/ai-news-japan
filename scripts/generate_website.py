@@ -156,6 +156,12 @@ def translate_with_gemini(items):
                     print(f"[WARNING] 翻訳結果がゼロ件 — モデルを変更してリトライ")
                     continue  # 次のモデルを試す
                 return items
+        except urllib.error.HTTPError as e:
+            if e.code == 429:
+                print(f"[WARNING] Gemini翻訳エラー ({model}): {e} — 30秒待機してリトライ")
+                time.sleep(30)
+            else:
+                print(f"[WARNING] Gemini翻訳エラー ({model}): {e}")
         except Exception as e:
             print(f"[WARNING] Gemini翻訳エラー ({model}): {e}")
     print("[WARNING] Gemini翻訳に失敗 — 英語タイトルのまま表示します")
