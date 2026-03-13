@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="海外の最新AIニュースを毎日日本語でまとめてお届け。HackerNews・Redditから厳選した情報をAIが翻訳・要約。">
+    <meta property="og:title" content="AI速報ジャパン - 2026年03月11日の海外AIニュース">
+    <meta property="og:description" content="HackerNews・RedditのAIニュースをAIが日本語に翻訳・要約してお届け。">
+    <meta property="og:type" content="website">
+    <title>AI速報ジャパン｜2026年03月11日の海外AIニュース日本語まとめ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        /* ===== CSS変数 ===== */
+        :root {
+            --bg:        #09090f;
+            --bg-card:   #111119;
+            --bg-card2:  #17172200;
+            --border:    #1e1e2e;
+            --border-h:  #7c6de8;
+            --text:      #e2e2ee;
+            --text-sub:  #7a7a9a;
+            --text-dim:  #44445a;
+            --accent:    #7c6de8;
+            --accent-lt: #a78bfa;
+            --gold:      #f5c518;
+            --hot:       #ff5f5f;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+
+        /* ===== アニメーション定義 ===== */
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(18px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity:1; }
+            50%       { opacity:0.5; }
+        }
+
+        /* ===== ベース ===== */
+        body {
+            font-family: 'Noto Sans JP', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.65;
+        }
+
+        /* ===== ヘッダー ===== */
+        header {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(9,9,15,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 22px 16px 18px;
+            text-align: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+        .logo-ai {
+            background: linear-gradient(135deg, #a78bfa, #7c6de8, #60a5fa);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+        }
+        .tagline {
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            letter-spacing: 0.3px;
+        }
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .hbadge {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: #13131e; border: 1px solid #2a2a3e;
+            border-radius: 20px; padding: 3px 11px;
+            font-size: 0.74rem; color: var(--text-sub);
+        }
+        .hbadge.live {
+            border-color: #4a3a8a;
+            color: var(--accent-lt);
+        }
+        .live-dot {
+            width: 6px; height: 6px;
+            background: var(--accent-lt);
+            border-radius: 50%;
+            animation: pulse 1.8s ease-in-out infinite;
+        }
+
+        /* ===== フィルタータブ ===== */
+        .filter-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 16px 4px;
+        }
+        .filter-btn {
+            background: #13131e;
+            border: 1px solid #2a2a3e;
+            border-radius: 24px;
+            padding: 5px 18px;
+            font-size: 0.78rem;
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+        .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+        .filter-btn.active {
+            background: linear-gradient(135deg, #2d1f6e, #1d2855);
+            border-color: var(--accent);
+            color: var(--accent-lt);
+            font-weight: 700;
+        }
+
+        /* ===== コンテンツ ===== */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 16px 50px;
+        }
+        .section-header {
+            display: flex; align-items: center; gap: 10px;
+            margin-bottom: 20px;
+        }
+        .section-label {
+            font-size: 0.66rem; font-weight: 700;
+            color: var(--accent); letter-spacing: 2.5px;
+            text-transform: uppercase;
+        }
+        .section-line { flex:1; height:1px; background:var(--border); }
+        .count-text { font-size: 0.7rem; color: var(--text-dim); }
+
+        /* ===== カード ===== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 22px 16px;
+            margin-bottom: 12px;
+            position: relative; overflow: hidden;
+            transition: border-color 0.2s, transform 0.18s, box-shadow 0.2s;
+            animation: fadeUp 0.45s ease both;
+        }
+        /* カード上部ラインをhover時に光らせる */
+        .card::before {
+            content: '';
+            position: absolute; top:0; left:0; right:0; height:2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-lt), transparent);
+            opacity: 0; transition: opacity 0.2s;
+        }
+        .card:hover {
+            border-color: #3a2a6a;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(124,109,232,0.14);
+        }
+        .card:hover::before { opacity: 1; }
+        .card.hidden { display: none !important; }
+
+        /* カード上段 */
+        .card-top-row {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 12px; flex-wrap: wrap;
+        }
+        .rank-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem; font-weight: 700;
+            border: 1px solid; border-radius: 8px;
+            padding: 2px 8px; line-height: 1.4;
+            flex-shrink: 0;
+        }
+        .card-badges { display: flex; gap: 6px; flex: 1; }
+        .hot-badge {
+            display: inline-flex; align-items: center; gap: 3px;
+            background: rgba(255,95,95,0.12);
+            border: 1px solid rgba(255,95,95,0.35);
+            border-radius: 6px; padding: 2px 8px;
+            font-size: 0.68rem; font-weight: 700;
+            color: var(--hot); letter-spacing: 0.3px;
+        }
+        .source-badge {
+            display: inline-flex; align-items: center; gap: 3px;
+            border: 1px solid; border-radius: 6px;
+            padding: 2px 8px; font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+        .score-badge {
+            margin-left: auto; font-size: 0.7rem; color: var(--text-dim);
+            white-space: nowrap;
+        }
+
+        /* カードタイトル・本文 */
+        .card-title {
+            font-size: 1.05rem; font-weight: 700;
+            line-height: 1.55; margin-bottom: 9px;
+        }
+        .card-title a {
+            color: var(--text); text-decoration: none;
+            transition: color 0.15s;
+        }
+        .card-title a:hover { color: var(--accent-lt); }
+        .card-summary {
+            font-size: 0.86rem; color: var(--text-sub);
+            line-height: 1.75; margin-bottom: 14px;
+        }
+        .card-footer {
+            display: flex; justify-content: flex-end; gap: 8px;
+            border-top: 1px solid var(--border); padding-top: 10px;
+            margin-top: 4px; flex-wrap: wrap;
+        }
+        .btn-translate {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: rgba(124,109,232,0.12);
+            border: 1px solid rgba(124,109,232,0.35);
+            border-radius: 7px; padding: 4px 12px;
+            font-size: 0.76rem; font-weight: 700;
+            color: var(--accent-lt);
+            font-family: 'Noto Sans JP', sans-serif;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .btn-translate:hover {
+            background: rgba(124,109,232,0.22);
+            border-color: rgba(124,109,232,0.6);
+        }
+        .btn-translate.open {
+            background: rgba(124,109,232,0.25);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* アコーディオン展開エリア */
+        .summary-accordion {
+            overflow: hidden;
+            transition: max-height 0.35s ease, opacity 0.3s ease;
+            margin-bottom: 4px;
+        }
+        .btn-original {
+            display: inline-flex; align-items: center;
+            font-size: 0.76rem; color: var(--text-dim);
+            text-decoration: none; font-weight: 500;
+            transition: color 0.15s; padding: 4px 4px;
+        }
+        .btn-original:hover { color: var(--text-sub); }
+
+        /* ===== 空状態 ===== */
+        .empty-state {
+            text-align: center; padding: 60px 20px;
+            color: var(--text-dim);
+        }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
+
+        /* ===== フッター ===== */
+        footer {
+            text-align: center; padding: 36px 16px;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim); font-size: 0.78rem;
+        }
+        footer p { margin-bottom: 5px; }
+        .sns-links {
+            display: flex; justify-content: center; gap: 10px;
+            margin: 16px 0; flex-wrap: wrap;
+        }
+        .sns-links a {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #111119; border: 1px solid var(--border);
+            border-radius: 10px; padding: 8px 18px;
+            color: var(--text-sub); text-decoration: none;
+            font-size: 0.82rem; font-weight: 500;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .sns-links a:hover { border-color: var(--accent); color: var(--accent-lt); }
+        .footer-copy {
+            margin-top: 10px; font-size: 0.72rem; color: var(--text-dim);
+        }
+
+        /* ===== アフィリエイトカード ===== */
+        .aff-card {
+            display: flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, #131320, #1a1a2a);
+            border: 1px solid #2e2e50;
+            border-radius: 14px; padding: 14px 18px;
+            margin-bottom: 12px; text-decoration: none;
+            transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+        .aff-card:hover {
+            border-color: #5a4aaa;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(100,80,200,0.15);
+        }
+        .aff-pr {
+            position: absolute; top: 8px; right: 10px;
+            font-size: 0.6rem; color: #55557a;
+            background: #1e1e30; border: 1px solid #33335a;
+            border-radius: 4px; padding: 1px 5px;
+            letter-spacing: 0.5px;
+        }
+        .aff-icon { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
+        .aff-body { flex: 1; min-width: 0; }
+        .aff-title {
+            font-size: 0.9rem; font-weight: 700;
+            color: var(--text); margin-bottom: 3px;
+        }
+        .aff-desc {
+            font-size: 0.76rem; color: var(--text-sub); line-height: 1.5;
+        }
+        .aff-cta {
+            font-size: 0.78rem; font-weight: 700;
+            white-space: nowrap; flex-shrink: 0;
+        }
+
+        /* ===== AIツール紹介セクション ===== */
+        .tools-section {
+            margin-top: 40px;
+            padding-top: 28px;
+            border-top: 1px solid var(--border);
+        }
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px;
+            text-decoration: none;
+            transition: border-color 0.2s, transform 0.15s;
+            display: block;
+        }
+        .tool-card:hover {
+            border-color: var(--border-h);
+            transform: translateY(-2px);
+        }
+        .tool-card-header {
+            display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+        }
+        .tool-icon { font-size: 1.5rem; }
+        .tool-name { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+        .tool-tag {
+            display: inline-block; font-size: 0.65rem; font-weight: 700;
+            background: rgba(124,109,232,0.15); color: var(--accent);
+            border: 1px solid rgba(124,109,232,0.3); border-radius: 4px;
+            padding: 1px 6px; margin-bottom: 6px;
+        }
+        .tool-desc { font-size: 0.78rem; color: var(--text-sub); line-height: 1.55; }
+
+        /* ===== レスポンシブ ===== */
+        @media (max-width: 600px) {
+            header { padding: 18px 14px 14px; }
+            .logo { font-size: 1.5rem; }
+            .card { padding: 16px 15px 13px; border-radius: 13px; }
+            .card-title { font-size: 0.96rem; }
+            .card-summary { font-size: 0.83rem; }
+            .aff-card { flex-wrap: wrap; }
+            .aff-cta { width: 100%; text-align: right; }
+            .tools-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header>
+        <div class="logo">
+            <span class="logo-ai">AI速報</span><span>ジャパン</span>
+        </div>
+        <p class="tagline">海外最新AIニュースを毎日日本語でお届け</p>
+        <div class="header-meta">
+            <span class="hbadge live"><span class="live-dot"></span> 2026年03月11日 03:14 更新</span>
+            <span class="hbadge">🔶 HackerNews</span>
+            <span class="hbadge">🤖 Reddit</span>
+        </div>
+    </header>
+
+    <!-- フィルタータブ -->
+    <div class="filter-wrap">
+        <button class="filter-btn active" onclick="filterCards('all',this)">すべて (4)</button>
+        <button class="filter-btn" onclick="filterCards('hn',this)">🔶 HackerNews</button>
+        <button class="filter-btn" onclick="filterCards('reddit',this)">🤖 Reddit</button>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <main class="container">
+        <div class="section-header">
+            <span class="section-label">Today's AI News</span>
+            <span class="section-line"></span>
+            <span class="count-text" id="countText">4件</span>
+        </div>
+        <div id="cardList">
+            
+        <article class="card" data-source="hn" style="animation-delay:0.00s">
+            <div class="card-top-row">
+                <span class="rank-badge" style="color:#f5c518; border-color:#f5c51844; background:#f5c51811">#1</span>
+                <div class="card-badges">
+                    <span class="hot-badge">🔥 HOT</span>
+                    <span class="source-badge" style="background:#ff631418; color:#ff6314; border-color:#ff631440">
+                        🔶 HN
+                    </span>
+                </div>
+                <span class="score-badge">▲ 2,340</span>
+            </div>
+            <h2 class="card-title">
+                <a href="https://news.ycombinator.com/item?id=12345" target="_blank" rel="noopener noreferrer">OpenAI、GPT-5を発表——性能が飛躍的に向上</a>
+            </h2>
+            
+            <div class="summary-accordion" id="summary-1" style="display:none">
+                <p class="card-summary">OpenAIはついに次世代モデル「GPT-5」を正式公開した。前モデルのGPT-4oと比較して推論能力が大幅に向上し、複雑な数学問題や長文読解において人間レベルを超えたとされる。マルチモーダル機能も強化され、画像・動画・音声を組み合わせた複合タスクに対応。APIも同日公開され、企業向け利用が可能に。日本のスタートアップや副業開発者にとっても、より精度の高いAIアシスタントとして活用できる機会が広がる。</p>
+            </div>
+            <div class="card-footer">
+                <button class="btn-translate" onclick="toggleSummary('summary-1', this)" aria-expanded="false">
+                    📖 要約を読む
+                </button>
+                <a class="btn-original" href="https://news.ycombinator.com/item?id=12345" target="_blank" rel="noopener noreferrer">
+                    元記事 →
+                </a>
+            </div>
+        </article>
+        <article class="card" data-source="reddit" style="animation-delay:0.07s">
+            <div class="card-top-row">
+                <span class="rank-badge" style="color:#b0b0b0; border-color:#b0b0b044; background:#b0b0b011">#2</span>
+                <div class="card-badges">
+                    <span class="hot-badge">🔥 HOT</span>
+                    <span class="source-badge" style="background:#ff450018; color:#ff4500; border-color:#ff450040">
+                        🤖 ML
+                    </span>
+                </div>
+                <span class="score-badge">▲ 1,250</span>
+            </div>
+            <h2 class="card-title">
+                <a href="https://www.reddit.com/r/MachineLearning/comments/abc123" target="_blank" rel="noopener noreferrer">Anthropic、推論能力を強化した「Claude 4」を発表</a>
+            </h2>
+            
+            <div class="summary-accordion" id="summary-2" style="display:none">
+                <p class="card-summary">AnthropicはClaude 4を発表し、特に複数ステップを要する推論タスクにおいて大幅な改善を達成した。新しいChain-of-Thought機能が搭載され、問題を段階的に分解して解く能力が向上。コード生成精度も改善し、PythonやTypeScriptのバグ修正成功率が前バージョン比で30%向上したとのこと。</p>
+            </div>
+            <div class="card-footer">
+                <button class="btn-translate" onclick="toggleSummary('summary-2', this)" aria-expanded="false">
+                    📖 要約を読む
+                </button>
+                <a class="btn-original" href="https://www.reddit.com/r/MachineLearning/comments/abc123" target="_blank" rel="noopener noreferrer">
+                    元記事 →
+                </a>
+            </div>
+        </article>
+        <article class="card" data-source="hn" style="animation-delay:0.14s">
+            <div class="card-top-row">
+                <span class="rank-badge" style="color:#cd7f32; border-color:#cd7f3244; background:#cd7f3211">#3</span>
+                <div class="card-badges">
+                    <span class="hot-badge">🔥 HOT</span>
+                    <span class="source-badge" style="background:#ff631418; color:#ff6314; border-color:#ff631440">
+                        🔶 HN
+                    </span>
+                </div>
+                <span class="score-badge">▲ 980</span>
+            </div>
+            <h2 class="card-title">
+                <a href="https://github.com/example/codellama-ultra" target="_blank" rel="noopener noreferrer">コーディングベンチマークでGPT-4を超えた新オープンソースLLM登場</a>
+            </h2>
+            
+            <div class="summary-accordion" id="summary-3" style="display:none">
+                <p class="card-summary">新しいオープンソースLLM「CodeLlama-Ultra」が複数のコーディングベンチマークでGPT-4を上回る性能を記録した。HumanEvalスコアで92.3%を達成し、これは現時点で公開されているモデルの中で最高値。モデルはMITライセンスで商用利用可能。</p>
+            </div>
+            <div class="card-footer">
+                <button class="btn-translate" onclick="toggleSummary('summary-3', this)" aria-expanded="false">
+                    📖 要約を読む
+                </button>
+                <a class="btn-original" href="https://github.com/example/codellama-ultra" target="_blank" rel="noopener noreferrer">
+                    元記事 →
+                </a>
+            </div>
+        </article>
+        <a class="aff-card" href="https://px.a8.net/svt/ejp?a8mat=XXXXX" target="_blank" rel="noopener noreferrer sponsored">
+            <span class="aff-pr">PR</span>
+            <span class="aff-icon">🎓</span>
+            <div class="aff-body">
+                <p class="aff-title">AIスキルをUdemyで学ぶ</p>
+                <p class="aff-desc">ChatGPT・Python・機械学習など7万本以上の講座。セール時は90%OFF。</p>
+            </div>
+            <span class="aff-cta" style="color:#a435f0">講座を探す →</span>
+        </a>
+        <article class="card" data-source="reddit" style="animation-delay:0.21s">
+            <div class="card-top-row">
+                <span class="rank-badge" style="color:#444466; border-color:#44446644; background:#44446611">#4</span>
+                <div class="card-badges">
+                    
+                    <span class="source-badge" style="background:#ff6b3518; color:#ff6b35; border-color:#ff6b3540">
+                        🦙 LLM
+                    </span>
+                </div>
+                <span class="score-badge">▲ 756</span>
+            </div>
+            <h2 class="card-title">
+                <a href="https://www.reddit.com/r/LocalLLaMA/comments/xyz789" target="_blank" rel="noopener noreferrer">一般消費者向けハードウェアで70Bモデルが動くようになった</a>
+            </h2>
+            
+            <div class="summary-accordion" id="summary-4" style="display:none">
+                <p class="card-summary">新しい量子化技術により、700億パラメータの大規模言語モデルが16GBのVRAMを持つコンシューマーGPUで動作可能になった。自宅PCでプライバシーを守りながら高性能AIを使えるようになり、副業者にとって画期的な変化だ。</p>
+            </div>
+            <div class="card-footer">
+                <button class="btn-translate" onclick="toggleSummary('summary-4', this)" aria-expanded="false">
+                    📖 要約を読む
+                </button>
+                <a class="btn-original" href="https://www.reddit.com/r/LocalLLaMA/comments/xyz789" target="_blank" rel="noopener noreferrer">
+                    元記事 →
+                </a>
+            </div>
+        </article>
+        </div>
+        <div class="empty-state" id="emptyState" style="display:none">
+            <div class="icon">🔍</div>
+            <p>該当する記事がありません</p>
+        </div>
+
+        <!-- AIツール紹介セクション -->
+        <section class="tools-section">
+            <div class="section-header">
+                <span class="section-label">AI Tools</span>
+                <span class="section-line"></span>
+                <span class="count-text">おすすめAIツール</span>
+            </div>
+            <div class="tools-grid">
+                <a class="tool-card" href="https://chat.openai.com" target="_blank" rel="noopener noreferrer">
+                    <div class="tool-card-header">
+                        <span class="tool-icon">🤖</span>
+                        <span class="tool-name">ChatGPT</span>
+                    </div>
+                    <span class="tool-tag">無料〜</span>
+                    <p class="tool-desc">OpenAIの対話AI。文章生成・コード作成・翻訳など万能。副業の出発点に最適。</p>
+                </a>
+                <a class="tool-card" href="https://claude.ai" target="_blank" rel="noopener noreferrer">
+                    <div class="tool-card-header">
+                        <span class="tool-icon">✳️</span>
+                        <span class="tool-name">Claude</span>
+                    </div>
+                    <span class="tool-tag">無料〜</span>
+                    <p class="tool-desc">Anthropicの高性能AI。長文の要約・分析・コーディング支援が得意。</p>
+                </a>
+                <a class="tool-card" href="https://www.canva.com" target="_blank" rel="noopener noreferrer">
+                    <div class="tool-card-header">
+                        <span class="tool-icon">🎨</span>
+                        <span class="tool-name">Canva</span>
+                    </div>
+                    <span class="tool-tag">無料〜</span>
+                    <p class="tool-desc">AIを使った画像生成・SNSバナー作成が誰でも簡単に。副業コンテンツ制作に必須。</p>
+                </a>
+                <a class="tool-card" href="https://www.notion.so" target="_blank" rel="noopener noreferrer">
+                    <div class="tool-card-header">
+                        <span class="tool-icon">📝</span>
+                        <span class="tool-name">Notion AI</span>
+                    </div>
+                    <span class="tool-tag">無料〜</span>
+                    <p class="tool-desc">メモ・タスク管理にAIが統合。記事のアウトライン生成や要約も一瞬でできる。</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- フッター -->
+    <footer>
+        <p>HackerNews・Reddit から厳選し、AI が日本語に翻訳・要約しています。</p>
+        <p style="font-size:0.73rem; margin-top:3px;">情報の正確性は保証されません。必ず元記事をご確認ください。</p>
+        <div class="sns-links">
+            <a href="https://x.com/ai_fukugyo_ken7" target="_blank" rel="noopener">𝕏 @ai_fukugyo_ken7</a>
+            <a href="https://note.com/" target="_blank" rel="noopener">📝 note</a>
+        </div>
+        <p class="footer-copy">© 2026 AI速報ジャパン</p>
+    </footer>
+
+    <!-- フィルター & アコーディオン スクリプト -->
+    <script>
+        function filterCards(src, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const cards = document.querySelectorAll('#cardList .card');
+            let visible = 0;
+            cards.forEach(c => {
+                const show = src === 'all' || c.dataset.source === src;
+                c.classList.toggle('hidden', !show);
+                if (show) visible++;
+            });
+            document.getElementById('countText').textContent = visible + '件';
+            document.getElementById('emptyState').style.display = visible ? 'none' : 'block';
+        }
+
+        function toggleSummary(id, btn) {
+            const el = document.getElementById(id);
+            const isOpen = el.style.display !== 'none';
+            if (isOpen) {
+                el.style.display = 'none';
+                btn.textContent = '📖 要約を読む';
+                btn.classList.remove('open');
+                btn.setAttribute('aria-expanded', 'false');
+            } else {
+                el.style.display = 'block';
+                btn.textContent = '📖 要約を閉じる';
+                btn.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        }
+    </script>
+</body>
+</html>
