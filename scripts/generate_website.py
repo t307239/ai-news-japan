@@ -9,6 +9,20 @@ GitHub Pages用の静的HTMLを生成してgit pushする
 
 import os, json, datetime, urllib.request, urllib.parse, urllib.error, time, subprocess, re
 
+# ===== ~/.secrets からAPIキーを補完（環境変数が未設定の場合）=====
+def _load_secrets():
+    path = os.path.expanduser("~/.secrets")
+    if not os.path.exists(path): return
+    with open(path) as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"): continue
+            line = line.removeprefix("export").strip()
+            if "=" in line:
+                k, v = line.split("=", 1)
+                os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+_load_secrets()
+
 # ===== 設定 =====
 # GitHub Actions では環境変数から取得、ローカルではハードコード値を使用
 IS_CI          = os.environ.get("GITHUB_ACTIONS") == "true"
@@ -23,6 +37,7 @@ else:
     CACHE_FILE = os.path.expanduser("~/Claude/website_cache.json")
 
 GITHUB_REPO    = "t307239/ai-news-japan"
+GA4_MEASUREMENT_ID = os.environ.get("GA4_ID", "G-XXXXXXXXXX")
 
 # ===== キャッシュ管理（変更なしなら更新スキップ）=====
 def load_cache():
@@ -304,6 +319,7 @@ def generate_html(items, today):
     date_str  = today.strftime("%Y年%m月%d日")
     date_iso  = today.strftime("%Y-%m-%d")
     now_str   = datetime.datetime.now().strftime("%H:%M")
+    ga4_id    = GA4_MEASUREMENT_ID
 
     cards_html = ""
     aff_index  = 0  # 使用するバナーのインデックス
@@ -375,6 +391,14 @@ def generate_html(items, today):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="海外の最新AIニュースを毎日日本語でまとめてお届け。HackerNews・TechCrunch・MIT Tech Reviewから厳選した情報をAIが翻訳・要約。">
     <meta name="google-site-verification" content="Rzb7d4uOtZVeyRmI4nqMmR3LVT5ODz4h00oXC2bYP58">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={ga4_id}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){{dataLayer.push(arguments);}}
+      gtag('js', new Date());
+      gtag('config', '{ga4_id}');
+    </script>
     <!-- OGP -->
     <meta property="og:title" content="AI速報ジャパン｜{date_str}の海外AIニュース日本語まとめ">
     <meta property="og:description" content="HackerNews・TechCrunch・MIT Tech ReviewのAIニュースをAIが日本語に翻訳・要約してお届け。毎日更新。">
@@ -798,6 +822,36 @@ def generate_html(items, today):
             <div class="icon">🔍</div>
             <p>該当する記事がありません</p>
         </div>
+
+        <!-- おすすめAI書籍セクション -->
+        <section class="tools-section">
+            <div class="section-header">
+                <span class="section-label">AI Books</span>
+                <span class="section-line"></span>
+                <span class="count-text">おすすめAI書籍</span>
+            </div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px;">
+                <a href="https://rpx.a8.net/svt/ejp?a8mat=4AZD88+9T22IA+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26031088273_4AZD88_9T22IA_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F17890842%252F%26amp%3Bm%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21282617%252F%26amp%3Brafcid%3Dwsc_i_is_33f72da33714639c415e592c9633ecd7" rel="nofollow" referrerpolicy="no-referrer-when-downgrade" target="_blank"
+                   style="display:flex; align-items:center; gap:10px; background:#111119; border:1px solid #1e1e2e; border-radius:12px; padding:12px 16px; text-decoration:none; transition:border-color 0.2s; flex:1; min-width:240px;">
+                    <img src="https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/6068/9784815626068_1_5.jpg?_ex=64x64" width="48" height="48" style="border-radius:6px; flex-shrink:0;" alt="ChatGPT書籍">
+                    <div>
+                        <p style="font-size:0.82rem; font-weight:700; color:#e2e2ee; margin-bottom:3px;">この一冊で全部わかる ChatGPT &amp; Copilotの教科書</p>
+                        <p style="font-size:0.75rem; color:#7a7a9a;">楽天ブックス ・ <span style="color:#f5c518; font-weight:700;">1,980円</span> ・ 感想18件</p>
+                        <span style="font-size:0.65rem; color:#55557a; background:#1e1e30; border:1px solid #33335a; border-radius:4px; padding:1px 5px;">PR</span>
+                    </div>
+                </a>
+                <a href="https://rpx.a8.net/svt/ejp?a8mat=4AZD88+9T22IA+2HOM+BWGDT&rakuten=y&a8ejpredirect=https%3A%2F%2Fhb.afl.rakuten.co.jp%2Fhgc%2Fg00q0724.2bo11c45.g00q0724.2bo12179%2Fa26031088273_4AZD88_9T22IA_2HOM_BWGDT%3Fpc%3Dhttps%253A%252F%252Fitem.rakuten.co.jp%252Fbook%252F17923392%252F%26amp%3Bm%3Dhttp%253A%252F%252Fm.rakuten.co.jp%252Fbook%252Fi%252F21314579%252F%26amp%3Brafcid%3Dwsc_i_is_33f72da33714639c415e592c9633ecd7" rel="nofollow" referrerpolicy="no-referrer-when-downgrade" target="_blank"
+                   style="display:flex; align-items:center; gap:10px; background:#111119; border:1px solid #1e1e2e; border-radius:12px; padding:12px 16px; text-decoration:none; transition:border-color 0.2s; flex:1; min-width:240px;">
+                    <img src="https://thumbnail.image.rakuten.co.jp/@0_mall/book/cabinet/3510/9784297143510_1_2.jpg?_ex=64x64" width="48" height="48" style="border-radius:6px; flex-shrink:0;" alt="ChatGPT書籍">
+                    <div>
+                        <p style="font-size:0.82rem; font-weight:700; color:#e2e2ee; margin-bottom:3px;">図解即戦力 ChatGPTのしくみと技術がこれ1冊でしっかりわかる教科書</p>
+                        <p style="font-size:0.75rem; color:#7a7a9a;">楽天ブックス ・ <span style="color:#f5c518; font-weight:700;">2,640円</span></p>
+                        <span style="font-size:0.65rem; color:#55557a; background:#1e1e30; border:1px solid #33335a; border-radius:4px; padding:1px 5px;">PR</span>
+                    </div>
+                </a>
+            </div>
+            <img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=4AZD88+9T22IA+2HOM+BWGDT" alt="">
+        </section>
 
         <!-- AIツール紹介セクション -->
         <section class="tools-section">
